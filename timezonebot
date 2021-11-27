@@ -1,0 +1,66 @@
+using System;
+using Telegram.Bot;
+using Telegram.Bot.Args;
+
+namespace TelegramBotMessaging
+{
+    internal class Program
+    {
+        static TelegramBotClient botClient = new TelegramBotClient("2094214121:AAFThV9y6W1z3F6d20VOix8pvjLgBb-O77I");
+        static void Main(string[] args)
+        {
+
+            botClient.OnMessage += BotClient_OnMessage;
+            botClient.StartReceiving();
+            Console.ReadKey();
+
+        }
+
+        private static void BotClient_OnMessage(object sender, MessageEventArgs e)
+        {
+
+            TimeZoneInfo londonzone, pariszone, moscowzone, tehranzone;
+            DateTime london, paris, moscow, tehran ;
+
+            londonzone = TimeZoneInfo.FindSystemTimeZoneById("Greenwich Standard Time");
+            london = TimeZoneInfo.ConvertTime(DateTime.Now, londonzone);
+            pariszone = TimeZoneInfo.FindSystemTimeZoneById("Central Europe Standard Time");
+            paris = TimeZoneInfo.ConvertTime(DateTime.Now, pariszone);
+            moscowzone = TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time");
+            moscow = TimeZoneInfo.ConvertTime(DateTime.Now, moscowzone);
+            tehranzone = TimeZoneInfo.FindSystemTimeZoneById("Iran Standard Time");
+            tehran = TimeZoneInfo.ConvertTime(DateTime.Now, tehranzone);
+
+            if (e.Message.Text.Equals("/start"))
+            {
+                Console.WriteLine("fgrretgr");
+                botClient.SendTextMessageAsync(e.Message.Chat.Id, " Hi " + " , " + e.Message.Chat.FirstName + " ', " + "\n PRESS THE CITY YOU WANT ITS TIME:\n/London\n/Paris🗽\n/Moscow\n/Tehran");
+            }
+            if (e.Message.Text == "/London")
+            {
+                Console.Write("\n Standard Time       " + london
+                   .ToString());
+                botClient.SendTextMessageAsync(e.Message.Chat.Id, "London Time : " + london.ToString());
+            }
+            if (e.Message.Text == "/Paris")
+            {
+                Console.Write("\n Standard Time       " + paris
+                   .ToString());
+                botClient.SendTextMessageAsync(e.Message.Chat.Id, "London Time : " + paris.ToString());
+            }
+            if (e.Message.Text == "/Moscow")
+            {
+                Console.Write("\n Standard Time       " + moscow
+                   .ToString());
+                botClient.SendTextMessageAsync(e.Message.Chat.Id, "London Time : " + moscow.ToString());
+            }
+            if (e.Message.Text == "/Tehran")
+            {
+                Console.Write("\n Standard Time       " + tehran
+                   .ToString());
+                botClient.SendTextMessageAsync(e.Message.Chat.Id, "London Time : " + tehran.ToString());
+            }
+           
+        }
+    }
+}
