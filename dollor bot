@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Telegram.Bot;
+using Telegram.Bot.Args;
+using HtmlAgilityPack;
+
+namespace USDbot
+{
+    internal class Program
+    {
+        static TelegramBotClient botClient = new TelegramBotClient("5099307775:AAGmfnXnmsXWNBz7UrDw4nXJOND9bdk09EY");
+        static void Main(string[] args)
+        {
+            botClient.OnMessage += botClient_OnMessage;
+            botClient.StartReceiving();
+
+            Console.ReadKey();
+        }
+        private static void botClient_OnMessage(object sender, MessageEventArgs e)
+        {
+            if (e.Message.Text == "/start")
+            {
+                botClient.SendTextMessageAsync(e.Message.Chat.Id, " Hi " + " , " + e.Message.Chat.FirstName + "'," + "\n PRESS: /Dollar");
+            }
+            if (e.Message.Text == "/Dollar")
+            {
+                DateTime time = DateTime.Now;
+                DateTime timeUTC = DateTime.UtcNow;
+                HtmlWeb web = new HtmlWeb();
+                HtmlDocument document = web.Load("https://www.iranjib.ir/showgroup/23/realtime_price/");
+                var title = document.DocumentNode.SelectSingleNode("//td[@id='f_7953_68_pr']").InnerText;
+                botClient.SendTextMessageAsync(e.Message.Chat.Id, " This is the price :" + title + 
+                    "\nCurrent Time:" + time +
+                    "\nUTC Time : " + timeUTC
+                    );
+            }
+        }
+    }
+}
